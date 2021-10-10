@@ -1,4 +1,38 @@
+const express = require("express");
 const axios = require("axios");
+const app = express();
+const cors = require('cors');
+const redis = require("redis");
+// app.use(cors());
+
+
+const redisPort = 6379
+const client = redis.createClient(redisPort);
+
+
+client.on("error", (err) => {
+    console.log(err);
+    console.log('worked perfectly')
+})
+var whitelist = []// Should be gotten from redis
+client.keys("*", function(err, keys) {
+    if (err) return console.log(err);
+
+    for(var i = 0, len = keys.length; i < len; i++) {
+        console.log(keys[i]);
+    } 
+})
+var corsOptions = {
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        callback(null, true)
+      } else {
+        callback(new Error('Not allowed by CORS'))
+      }
+    }
+  }
+
+
 
 exports.getRecords = async (req, res) => {
 
@@ -89,3 +123,48 @@ exports.getRecords = async (req, res) => {
      
     }
 }
+
+exports.whitelistUserEmail = async (req, res) => {
+    try {
+
+        const { _id } = req.body
+        // console.log(_id)
+        console.log(String(_id))
+        if ( _id == undefined ) {
+            // Send response to client
+            res.status(400).json({message:"Kindly provide:'_id' in your request bodyy", success: false})
+
+            } else {
+                
+                const url = `https://randomuser.me/api/?results=5000`
+                const response = await axios.get(url)
+                // console.log(response.data.results)
+                .catch((err) => {
+                    res.status(500).json({
+                        success: false,
+                        message: "Failed to fetch data from 3rd party Api"
+                    })
+                })
+
+
+                response.data.results.forEach((data) => {
+                    // console.log(String(data.login.uuid))
+                    // console.log(String(_id))
+                    // String()
+                    const trueOrFalse = String(data.login.uuid) == String(_id)
+                    console.log(trueOrFalse)
+                    if ( String(data.login.uuid) == String(_id) ) {
+                   
+                        // Set new value 
+                        client.set(`${data.login.uuid}`, `${data.email}`)
+
+                    
+                    }
+                })
+            }
+
+    } catch(err) {
+
+    }
+}
+
