@@ -6,8 +6,8 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const toobusy = require('toobusy-js');
 const hpp = require('hpp');
-// const swaggerJsDoc = require('swagger-jsdoc');
-// const swaggerUi = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 const config = require("./config");
 const fs = require("fs");
 require("dotenv").config();
@@ -36,7 +36,7 @@ const swaggerOptions = {
     swaggerDefinition: {
       info: {
         version: "1.0.0",
-        title: "World Texting Foundation",
+        title: " Random User Generator",
         description: "This is the swagger documentation for the World Texting Foundation API",
         contact: {
           name: "Nwigwe Uzochukwu"
@@ -50,13 +50,14 @@ const swaggerOptions = {
       }
     },
     
-    apis: ['./routes/*.js']
+    // apis: ['./routes/*.js']
+    apis: ["./routes.js"]
   };
   
-//   const swaggerDocs = swaggerJsDoc(swaggerOptions);
+  const swaggerDocs = swaggerJsDoc(swaggerOptions);
  
   // Bring in the route
-//   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+  app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
   app.use(require('./routes'));
 
       // Connect the database

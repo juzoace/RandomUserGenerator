@@ -138,7 +138,6 @@ exports.whitelistUserEmail = async (req, res) => {
                 
                 const url = `https://randomuser.me/api/?results=5000`
                 const response = await axios.get(url)
-                // console.log(response.data.results)
                 .catch((err) => {
                     res.status(500).json({
                         success: false,
@@ -148,9 +147,6 @@ exports.whitelistUserEmail = async (req, res) => {
 
 
                 response.data.results.forEach((data) => {
-                    // console.log(String(data.login.uuid))
-                    // console.log(String(_id))
-                    // String()
                     const trueOrFalse = String(data.login.uuid) == String(_id)
                     console.log(trueOrFalse)
                     if ( String(data.login.uuid) == String(_id) ) {
@@ -164,7 +160,8 @@ exports.whitelistUserEmail = async (req, res) => {
             }
 
     } catch(err) {
-
+        // Send resonse to client
+        res.status(500).json(errorMessage("Operation not successful")) 
     }
 }
 

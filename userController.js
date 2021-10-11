@@ -30,7 +30,7 @@ exports.userRegistration = async (req, res) => {
           const oldUser = await User.findOne({ email });
       
           if (oldUser) {
-            return res.status(409).send("User Already Exist. Please Login");
+            return res.status(400).send("User Already Exist. Please Login");
           }
       
           //Encrypt user password
