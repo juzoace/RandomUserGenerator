@@ -6,9 +6,11 @@ const redis = require("redis");
 // app.use(cors());
 
 
-const redisPort = 6379
-const client = redis.createClient(redisPort);
-
+const redisPort = 18912;
+const hostName = `redis-18912.c90.us-east-1-3.ec2.cloud.redislabs.com`;
+// redis-18912.c90.us-east-1-3.ec2.cloud.redislabs.com:18912
+const client = redis.createClient(redisPort, hostName);
+client.send_command('AUTH', [ 'Juzoboss98@', 'uzochukwu']);
 
 client.on("error", (err) => {
     console.log(err);
