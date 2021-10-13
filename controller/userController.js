@@ -1,11 +1,10 @@
-const User = require("./userModel")
+const User = require("../userModel")
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const {
   registerValidationRules,
-  loginValidationRules,
-  welComeValidationRules
-} = require("./validation");
+  loginValidationRules
+} = require("../validation");
 
 exports.userRegistration = async (req, res) => {
 

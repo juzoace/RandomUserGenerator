@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const auth = require("./authMiddleware");
-const { userRegistration, userLogin, userWelcome } = require("./userController");
-const { getRecords, whitelistUserEmail } = require("./recordsController");
+const { userRegistration, userLogin, userWelcome } = require("./controller/userController");
+const { getRecords, whitelistUserEmail,  whitelistRecords, userWhiteListStatus } = require("./controller/recordsController");
 
 /**
  * @swagger
@@ -212,7 +212,16 @@ router.post("/welcome", auth, (req, res, next) => next() , userWelcome)
  */ 
 router.get("/records", auth, (req, res, next) => next(), getRecords )
 
-router.post("/whitelist", (req, res, next) => next(), whitelistUserEmail) 
+router.get("/getWhiteListRecords", (req, res, next) => next(), whitelistRecords)
+
+router.get("/getUserWhiteListStatus", (req, res, next) => next(), userWhiteListStatus)
+
+router.post("/whitelist", (req, res, next) => next(), whitelistUserEmail)
+
+
+
+// router.get("/getWhitelisttRecords", (req, res, next) => next(), whitelistRecords)
+
 // ALL other routes return 404 by default
  router.get("*", (req, res) => {
     res.sendStatus(404);

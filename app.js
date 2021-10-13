@@ -10,6 +10,7 @@ const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const config = require("./config");
 const fs = require("fs");
+const Whitelist = require("./whiteListModel")
 require("dotenv").config();
 app.use(helmet());
 app.use(helmet.noSniff());
@@ -43,14 +44,14 @@ const swaggerOptions = {
         },
         servers: [ 
             {
-                url:`http://${config.db.host}:${config.db.port}`, 
+                url:`http://${config.HOST}:${config.PORT}`, 
                 description: "Development server"
             } 
         ]
       }
     },
     
-    // apis: ['./routes/*.js']
+ 
     apis: ["./routes.js"]
   };
   
@@ -58,13 +59,47 @@ const swaggerOptions = {
  
   // Bring in the route
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+  
   app.use(require('./routes'));
 
-      // Connect the database
-      mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.database}`, { useNewUrlParser: true }).then(() => {
-        console.log(`Database connected successfully`)
-    }).catch(err => { 
-        console.log(`Unable to connect with the database ${err}`)
-    });
-    
-    module.exports = app;
+  if(process.env.NODE_ENV == 'development'){ 
+        // Connect the database
+        mongoose.connect(`mongodb://${config.DB_HOST}:${config.DB_PORT}/${config.DB_DATABASE}`, { useNewUrlParser: true }).then(() => {
+          console.log(`Database connected successfully`)
+      }).catch(err => { 
+          console.log(`Unable to connect with the database ${err}`)
+      });
+ } else {
+    // Connect the database
+    mongoose.connect(`mongodb+srv://Uzochukwu:${config.DB_PASSWORD}@application.j1cdp.azure.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, { useNewUrlParser: true }).then(() => {
+      console.log(`Database connected successfully`)
+  }).catch(err => { 
+      console.log(`Unable to connect with the database ${err}`)
+ })
+
+}
+
+const populateData = async () => {
+
+  // let adminData = await Acronym.findOne({ name: "admin" })
+  let adminData = await Whitelist.findOne({
+    name: "admin"
+  })
+
+  if (!adminData) {
+
+    const adminWhiteList = new Whitelist({
+      name: "admin",
+
+    })
+
+    adminWhiteList.save()
+
+
+  }
+
+}
+
+populateData()
+
+module.exports = app;
