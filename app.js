@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require('mongoose');
 const app = express();
-
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const toobusy = require('toobusy-js');
@@ -9,8 +9,9 @@ const hpp = require('hpp');
 const swaggerJsDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const config = require("./config");
+const Whitelist = require("./models/whiteListModel")
 const fs = require("fs");
-const Whitelist = require("./whiteListModel")
+const path = require('path');
 require("dotenv").config();
 app.use(helmet());
 app.use(helmet.noSniff());
@@ -30,6 +31,12 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.json());
 
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, 'access.log'),
+  { flags: 'a' }
+);
+
+app.use(morgan('combined', { stream: accessLogStream }));
 
 
 // Swagger Open Api Options Definition 
@@ -59,25 +66,27 @@ const swaggerOptions = {
  
   // Bring in the route
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-  
+
   app.use(require('./routes'));
 
   if(process.env.NODE_ENV == 'development'){ 
         // Connect the database
-        mongoose.connect(`mongodb://${config.DB_HOST}:${config.DB_PORT}/${config.DB_DATABASE}`, { useNewUrlParser: true }).then(() => {
+        mongoose.connect(`mongodb://${config.DB_HOST}:${config.DB_PORT}/${config.DB_DATABASE}`).then(() => {
           console.log(`Database connected successfully`)
       }).catch(err => { 
           console.log(`Unable to connect with the database ${err}`)
       });
  } else {
     // Connect the database
-    mongoose.connect(`mongodb+srv://Uzochukwu:${config.DB_PASSWORD}@application.j1cdp.azure.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, { useNewUrlParser: true }).then(() => {
+    mongoose.connect(`${config.MONGOLAB_URI}`, { useNewUrlParser: true }).then(() => {
       console.log(`Database connected successfully`)
-  }).catch(err => { 
-      console.log(`Unable to connect with the database ${err}`)
+  })
+  .catch(err => { 
+      console.log(`${err}`)
  })
 
 }
+
 
 const populateData = async () => {
 
@@ -85,7 +94,9 @@ const populateData = async () => {
   let adminData = await Whitelist.findOne({
     name: "admin"
   })
+  .catch((err) => {
 
+  })
   if (!adminData) {
 
     const adminWhiteList = new Whitelist({

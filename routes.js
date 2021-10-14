@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const auth = require("./authMiddleware");
-const { userRegistration, userLogin, userWelcome } = require("./controller/userController");
+const { userRegistration, userLogin, userWelcome } = require("./controller/userAuthController");
 const { getRecords, whitelistUserEmail,  whitelistRecords, userWhiteListStatus } = require("./controller/recordsController");
 
 /**
@@ -212,13 +212,139 @@ router.post("/welcome", auth, (req, res, next) => next() , userWelcome)
  */ 
 router.get("/records", auth, (req, res, next) => next(), getRecords )
 
+/**
+ * @swagger
+ * /getWhiteListRecords:
+ *   post:
+ *     description: Try get a list of all users which have been whitelisted
+ *     responses: 
+ *       200:
+ *         description: Response body object
+ *         schema: 
+ *           type: object  
+ *           properties: 
+ *             message:
+ *               type: string
+ *             success: 
+ *               type: boolean
+ *       500:
+ *          description: Response body object
+ *          schema: 
+ *            type: object  
+ *            properties: 
+ *              message:
+ *                type: string
+ *              success: 
+ *                type: boolean
+ *                enum: [false, true]  
+ * 
+ */ 
+
 router.get("/getWhiteListRecords", (req, res, next) => next(), whitelistRecords)
 
-router.get("/getUserWhiteListStatus", (req, res, next) => next(), userWhiteListStatus)
+
+/**
+ * @swagger
+ * /getUserWhiteListStatus:
+ *   post:
+ *     description: Try to get a user record togeher with it's whitelist status
+ *     parameters:
+ *       - name: Request body
+ *         in: body
+ *         description: Request body object
+ *         schema: 
+ *           type: object
+ *           required:
+ *             - _id
+ *           properties: 
+ *             _id:
+ *               type: string
+ *     responses: 
+ *       200:
+ *         description: Response body object
+ *         schema: 
+ *           type: object  
+ *           properties: 
+ *             message:
+ *               type: string
+ *             success: 
+ *               type: boolean
+ *       400:
+ *          description: Response body object
+ *          schema: 
+ *            type: object  
+ *            properties: 
+ *              message:
+ *                type: string
+ *              success: 
+ *                type: boolean
+ *                enum: [false, true]
+ *       500:
+ *          description: Response body object
+ *          schema: 
+ *            type: object  
+ *            properties: 
+ *              message:
+ *                type: string
+ *              success: 
+ *                type: boolean
+ *                enum: [false, true]  
+ * 
+ */ 
+
+router.post("/getUserWhiteListStatus", (req, res, next) => next(), userWhiteListStatus)
+
+/**
+ * @swagger
+ * /whitelist:
+ *   post:
+ *     description: Try to get a user record togeher with it's whitelist status
+ *     parameters:
+ *       - name: Request body
+ *         in: body
+ *         description: Request body object
+ *         schema: 
+ *           type: object
+ *           required:
+ *             - _id
+ *           properties: 
+ *             _id:
+ *               type: string
+ *     responses: 
+ *       200:
+ *         description: Response body object
+ *         schema: 
+ *           type: object  
+ *           properties: 
+ *             message:
+ *               type: string
+ *             success: 
+ *               type: boolean
+ *       400:
+ *          description: Response body object
+ *          schema: 
+ *            type: object  
+ *            properties: 
+ *              message:
+ *                type: string
+ *              success: 
+ *                type: boolean
+ *                enum: [false, true]
+ *       500:
+ *          description: Response body object
+ *          schema: 
+ *            type: object  
+ *            properties: 
+ *              message:
+ *                type: string
+ *              success: 
+ *                type: boolean
+ *                enum: [false, true]  
+ * 
+ */ 
+
 
 router.post("/whitelist", (req, res, next) => next(), whitelistUserEmail)
-
-
 
 // router.get("/getWhitelisttRecords", (req, res, next) => next(), whitelistRecords)
 

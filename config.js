@@ -40,6 +40,7 @@ module.exports = {
     DB_DATABASE: process.env.DB_DATABASE,
     TOKEN_KEY: process.env.TOKEN_KEY,
     DB_PASSWORD: process.env.DB_PASSWORD,
+    MONGOLAB_URI: process.env.MONGOLAB_URI,
     REDIS_PORT: process.env.REDIS_PORT,
     REDIS_HOSTNAME: process.env.REDIS_HOSTNAME,
     REDIS_USERNAME: process.env.REDIS_USERNAME,

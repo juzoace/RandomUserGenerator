@@ -1,6 +1,6 @@
 const axios = require("axios");
-const User = require("../userModel")
-const Whitelist = require("../whiteListModel")
+const User = require("../models/userModel")
+const Whitelist = require("../models/whiteListModel")
 
 exports.getRecords = async (req, res) => {
 
@@ -201,7 +201,7 @@ exports.userWhiteListStatus = async (req, res) => {
         res.status(200).json({
             success: true,
             message:"Operation successful",
-            data: foundUser
+            whitelistStatus: foundUser[0].emailIsWhiteListed
         })
         }
     }catch(err){
