@@ -57,12 +57,18 @@ exports.userRegistration = async (req, res) => {
           // return new user
           res.status(201).json(user);
       } else {
-        res.status(400).json(errorMessage("Invalid data"))
+        res.status(400).json({
+          success: false,
+          message: "Invalid Input data"
+        })
       }
       
       } catch (err) {
         // Send resonse to client
-        res.status(500).json(errorMessage("Operation not successful")) 
+        res.status(500).json({
+          success: false,
+          message: "Operation not successful"
+        }) 
       }
 
 }
@@ -108,12 +114,15 @@ exports.userLogin = async (req, res) => {
         }
 
     } else {
-        res.status(400).json(errorMessage("Invalid data"))
+      res.status(400).json({
+        success: false,
+        message: "Operation not successful"
+      })
     }
 
       } catch (err) {
               // Send resonse to client
-              res.status(500).json(errorMessage("Operation not successful")) 
+              res.status(500).json({success: false, message: "Operation not successful"}) 
       }
 
 }

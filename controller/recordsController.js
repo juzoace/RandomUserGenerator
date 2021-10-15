@@ -84,7 +84,7 @@ exports.getRecords = async (req, res) => {
 
     } catch(err) {
         // Send resonse to client
-        res.status(500).json(errorMessage("Operation not successful")) 
+        res.status(500).json({success: false, message:"Operation not successful"}) 
     }
 }
 
