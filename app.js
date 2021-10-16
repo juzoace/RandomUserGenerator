@@ -12,6 +12,7 @@ const config = require("./config");
 const Whitelist = require("./models/whiteListModel")
 const fs = require("fs");
 const path = require('path');
+const passport = require('passport');
 require("dotenv").config();
 app.use(helmet());
 app.use(helmet.noSniff());
@@ -37,6 +38,12 @@ const accessLogStream = fs.createWriteStream(
 );
 
 app.use(morgan('combined', { stream: accessLogStream }));
+
+// Pass the global passport object into the configuration function
+require('./passport')(passport);
+
+// This will initialize the passport object on every request
+app.use(passport.initialize());
 
 
 // Swagger Open Api Options Definition 
@@ -90,7 +97,6 @@ const swaggerOptions = {
 
 const populateData = async () => {
 
-  // let adminData = await Acronym.findOne({ name: "admin" })
   let adminData = await Whitelist.findOne({
     name: "admin"
   })
@@ -98,15 +104,10 @@ const populateData = async () => {
 
   })
   if (!adminData) {
-
     const adminWhiteList = new Whitelist({
       name: "admin",
-
     })
-
     adminWhiteList.save()
-
-
   }
 
 }

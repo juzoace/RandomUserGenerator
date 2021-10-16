@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const auth = require("./authMiddleware");
+const passport = require('passport');
 const { userRegistration, userLogin, userWelcome } = require("./controller/userAuthController");
 const { getRecords, whitelistUserEmail,  whitelistRecords, userWhiteListStatus } = require("./controller/recordsController");
 
@@ -162,7 +162,7 @@ router.post("/login", (req, res, next) => next() , userLogin)
  *                type: boolean
  *                enum: [false, true]           
  */
-router.post("/welcome", auth, (req, res, next) => next() , userWelcome)
+router.post("/welcome", passport.authenticate('jwt', {session: false}), (req, res, next) => next() , userWelcome)
 
 /**
  * @swagger
@@ -210,7 +210,7 @@ router.post("/welcome", auth, (req, res, next) => next() , userWelcome)
  *                enum: [false, true]  
  * 
  */ 
-router.get("/records", auth, (req, res, next) => next(), getRecords )
+router.get("/records", (req, res, next) => next(), getRecords )
 
 /**
  * @swagger
