@@ -55,7 +55,7 @@ WantedBy=multi-user.target
 8) Create the environment variable file using the command "vim app.env"
 9) Paste the following environment variables into the app.env file: NODE_ENV='production' PORT='8080' MONGOLAB_URI='****Your MongoDB Database Connection String******' npm run prod. P.S: Input your mongodb database connection string into the MONGOLAB_URI vaiable
 10) Save the file using ":wq: 
-11) Start the service file crteated in step 7 by using the command "sudo systemctl start RandomUserGenerator.service"
+11) Start the service file created in step 7 by using the command "sudo systemctl start RandomUserGenerator.service"
 12) Locate your Public Ipv4 address in your ec2 console. E.g http://3.139.102.88:8080. This will be used to access the api.  
 13) Test the routes using postman. i.e http://3.139.102.88:8080/register
 
