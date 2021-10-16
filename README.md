@@ -7,9 +7,9 @@
 2) Route protection 
 3) Call to an external Api  web service (randomuser.me)
 4) Swagger Documentation
-5) 
+5) Database Connection 
 # APPLICATION REQUIREMENTS
-Ensure you have the following installed and properly setup on your Pc: Node.js, MongoDB, MongoDB compass, Git, Postman & Chrome Browser 
+Ensure you have the following installed and properly setup on your Pc: Node.js, MongoDB, MongoDB compass, Git, Postman, AWS account & Chrome Browser,  
 # RUNNING THE APP LOCALLY
 1) Clone the app
 2) Move into the root directory of the app 
