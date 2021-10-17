@@ -28,7 +28,7 @@ DB_HOST=localhost
 
 # AWS EC2 DEPLOYMENT & RUNNING
 1) Open a Git Bash Terminal (on windows)
-2) Create an Ec2 Instance and download the necessary apps on the instance (i.e git, npm, node, yarn). Follow this guide for deploying it: https://www.youtube.com/watch?v=oHAQ3TzUTro 
+2) Create an Ec2 Instance and download the necessary apps on the instance (i.e git, npm, node, yarn). 
 3) Clone the repo into the aws ec2 instance
 4) Move into the project folder using "cd RandomUserGenerator/"
 5) Run "yarn install" to download project dependencies
