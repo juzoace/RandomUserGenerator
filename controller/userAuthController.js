@@ -19,7 +19,7 @@ exports.userRegistration = async (req, res) => {
     
           // Validate user input
           if (!(email && password && first_name && last_name)) {
-            res.status(400).send("All input is required");
+            return res.status(400).send("All input is required");
           }
       
           // check if user already exist
@@ -44,18 +44,18 @@ exports.userRegistration = async (req, res) => {
           .then((user) => {
             const jwt = utils.issueJWT(user);
 
-            res.json({ success: true, user: user, token: jwt.token, expiresIn: jwt.expires})
+            return res.satus(200).json({ success: true, user: user, token: jwt.token, expiresIn: jwt.expires})
           })
           .catch(() => {
              // Send resonse to client
-        res.status(500).json({
+          return res.status(500).json({
           success: false,
           message: "Operation not successful"
         })
           })
          
       } else {
-        res.status(400).json({
+        return res.status(400).json({
           success: false,
           message: "Invalid Input data"
         })
@@ -63,7 +63,7 @@ exports.userRegistration = async (req, res) => {
       
       } catch (err) {
         // Send resonse to client
-        res.status(500).json({
+        return res.status(500).json({
           success: false,
           message: "Operation not successful"
         }) 
@@ -90,13 +90,13 @@ exports.userLogin = async (req, res) => {
      
         if (user && ( utils.validPassword(password, user.hash, user.salt)  )   ) {
           const tokenObject = utils.issueJWT(user);      
-          res.status(200).json({ success: true, user: user, token: tokenObject.token, expiresIn: tokenObject.expires})
+          return res.status(200).json({ success: true, user: user, token: tokenObject.token, expiresIn: tokenObject.expires})
         } else {
-          res.status(400).send("Invalid Credentials");
+          return res.status(400).send("Invalid Credentials");
         }
 
     } else {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         message: "Operation not successful"
       })
@@ -104,10 +104,10 @@ exports.userLogin = async (req, res) => {
 
       } catch (err) {
               // Send resonse to client
-              res.status(500).json({success: false, message: "Operation not successful"}) 
+              return res.status(500).json({success: false, message: "Operation not successful"}) 
       }
 }
 
 exports.userWelcome = async (req, res) => {
-    res.status(200).send("Welcome 🙌 ");
+  return res.status(200).send("Welcome 🙌 ");
 }

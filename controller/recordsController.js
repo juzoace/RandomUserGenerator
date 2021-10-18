@@ -10,14 +10,14 @@ exports.getRecords = async (req, res) => {
 
     if ( token == undefined || parseInt(noOfData, 10) > 5000 ) {
     // Send resonse to client
-    res.status(400).json({message:"Kindly provide: 'noOfData', 'token' in your request query", success: false})
+    return res.status(400).json({message:"Kindly provide: 'noOfData', 'token' in your request query", success: false})
     } else {
 
         const integerValOfnoOfData = parseInt(noOfData, 10)
         const url = `https://randomuser.me/api/?results=${integerValOfnoOfData}`
         const response = await axios.get(url)
         .catch((err) => {
-            res.status(500).json({
+            return res.status(500).json({
                 success: false,
                 message: "Failed to fetch data from 3rd party Api"
             })
@@ -74,7 +74,7 @@ exports.getRecords = async (req, res) => {
             }
         }
        const finalResult = analytics(response)
-      res.status(200).json({
+       return res.status(200).json({
           success: true,
           data: finalResult,
           message: "Operation succesful"
@@ -84,7 +84,7 @@ exports.getRecords = async (req, res) => {
 
     } catch(err) {
         // Send resonse to client
-        res.status(500).json({success: false, message:"Operation not successful"}) 
+        return res.status(500).json({success: false, message:"Operation not successful"}) 
     }
 }
 
@@ -95,7 +95,7 @@ exports.whitelistUserEmail = async (req, res) => {
      
         if ( _id == undefined ) {
             // Send response to client
-            res.status(400).json({message:"Kindly provide:'_id' in your request bodyy", success: false})
+            return res.status(400).json({message:"Kindly provide:'_id' in your request bodyy", success: false})
 
             } else {
                 const updatedUser = await User.findOneAndUpdate( {_id: req.body._id}, {
@@ -111,18 +111,18 @@ exports.whitelistUserEmail = async (req, res) => {
                         
                         if (data.modifiedCount == 1) {
                             // Send resonse to client
-                            res.status(201).json({
+                            return res.status(201).json({
                                 success: true,
                                 message:"Operation successful"
                             })   
                             } else {
                                 // Send resonse to client
-                            res.status(400).json({success: false, message: "Email Already Exists"})
+                            return res.status(400).json({success: false, message: "Email Already Exists"})
                             } 
                     })
                     .catch(() => {
                         // Send failure response
-                 res.status(501).json({
+                    return res.status(501).json({
                     success: false,
                     message: "Operation Failed"
                 })
@@ -133,7 +133,7 @@ exports.whitelistUserEmail = async (req, res) => {
 
     } catch(err) {
         // Send resonse to client
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Operation not successful"
         }) 
@@ -147,7 +147,7 @@ exports.whitelistRecords = async (req, res) => {
         )
         .catch((err) => {
             // Send resonse to client
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Operation not successful"
         })
@@ -166,14 +166,14 @@ exports.whitelistRecords = async (req, res) => {
         })
       
         // Send resonse to client
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message:"Operation successful",
             data: whitelistArray
         })
 
     } catch(err){
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Operation not successful"
         })
@@ -187,25 +187,25 @@ exports.userWhiteListStatus = async (req, res) => {
 
         if ( _id == undefined ) {
              // Send resonse to client
-            res.status(400).json({message:"Kindly provide: '_id' in your request body", success: false})
+             return res.status(400).json({message:"Kindly provide: '_id' in your request body", success: false})
         } else {
             const foundUser = await User.find({name: "admin", _id: _id})
             .catch((err) => {
                 // Send resonse to client
-            res.status(500).json({
+            return res.status(500).json({
                 success: false,
                 message: "Operation not successful"
             })
             })
              // Send resonse to client
-        res.status(200).json({
+             return res.status(200).json({
             success: true,
             message:"Operation successful",
             whitelistStatus: foundUser[0].emailIsWhiteListed
         })
         }
     }catch(err){
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
             message: "Operation not successful"
         })

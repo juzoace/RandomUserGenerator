@@ -350,7 +350,7 @@ router.post("/whitelist", (req, res, next) => next(), whitelistUserEmail)
 
 // ALL other routes return 404 by default
  router.get("*", (req, res) => {
-    res.sendStatus(404);
+  return res.sendStatus(404);
   });
 
 module.exports = router;
