@@ -4,9 +4,10 @@ const {
   registerValidationRules,
   loginValidationRules
 } = require("../validation");
+const logger = require('../loggerService')
 
 exports.userRegistration = async (req, res) => {
-
+  logger.info(`POST "/register" route is accessed`)
     try {
           // Validate data
     const result = registerValidationRules(req.body)
@@ -72,7 +73,7 @@ exports.userRegistration = async (req, res) => {
 }
 
 exports.userLogin = async (req, res) => {
-
+  logger.info(`POST "/login" route is accessed`)
     try {
 
     // Validate data
@@ -109,5 +110,6 @@ exports.userLogin = async (req, res) => {
 }
 
 exports.userWelcome = async (req, res) => {
+  logger.info(`POST "/welcome" route is accessed`)
   return res.status(200).send("Welcome 🙌 ");
 }

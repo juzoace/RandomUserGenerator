@@ -1,9 +1,9 @@
 const axios = require("axios");
 const User = require("../models/userModel")
 const Whitelist = require("../models/whiteListModel")
-
+const logger = require('../loggerService')
 exports.getRecords = async (req, res) => {
-
+    logger.info(`GET "/records" route is accessed`)
     try {
     // Validate Input Data
     const { noOfData, token } = req.query;
@@ -89,6 +89,7 @@ exports.getRecords = async (req, res) => {
 }
 
 exports.whitelistUserEmail = async (req, res) => {
+    logger.info(`POST "/whitelist" route is accessed`)
     try {
 
         const { _id } = req.body
@@ -141,6 +142,7 @@ exports.whitelistUserEmail = async (req, res) => {
 }
 
 exports.whitelistRecords = async (req, res) => {
+    logger.info(`GET "/getWhiteListRecords" route is accessed`)
     try {
         const foundUsers = await User.find(
             { name: "admin"}
@@ -182,6 +184,7 @@ exports.whitelistRecords = async (req, res) => {
 
 
 exports.userWhiteListStatus = async (req, res) => {
+    logger.info(`POST "/getUserWhiteListStatus" route is accessed`)
     try{
         const {_id } = req.body;
 

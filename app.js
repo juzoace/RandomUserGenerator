@@ -13,7 +13,14 @@ const Whitelist = require("./models/whiteListModel")
 const fs = require("fs");
 const path = require('path');
 const passport = require('passport');
+const expressPinoLogger = require('express-pino-logger')
+const logger = require('./loggerService');
 require("dotenv").config();
+const loggerMidlleware = expressPinoLogger({
+  logger: logger,
+  autoLogging: false,
+});
+app.use(loggerMidlleware);
 app.use(helmet());
 app.use(helmet.noSniff());
 app.use(helmet.hsts()); // default configuration
